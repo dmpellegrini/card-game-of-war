@@ -26,34 +26,43 @@ class Game {
 		}
 	}
 	playTurn (){
-		if (this.player1.cards.length === 0){
-			console.log("Player 2 has already won the game")
+		// if (this.player1.cards.length === 0){
+		// 	console.log("Player 2 has already won the game")
+		// }
+		// else if(this.player2.cards.length === 0){
+		// 	console.log("Player 1 has already won the game")
+		// }
+		// else {
+		const drawCard1 = this.player1.cards.pop()
+		const drawCard2 = this.player2.cards.pop()
+		if (drawCard1.score > drawCard2.score) {
+			this.player1.cards.unshift(drawCard2)
+			this.player1.cards.unshift(drawCard1)
 		}
-		else if(this.player2.cards.length === 0){
-			console.log("Player 1 has already won the game")
+		else if (drawCard1.score < drawCard2.score) {
+			this.player2.cards.unshift(drawCard2)
+			this.player2.cards.unshift(drawCard1)
 		}
-		else {
-			const drawCard1 = this.player1.cards.pop()
-			const drawCard2 = this.player2.cards.pop()
-			if (drawCard1.score > drawCard2.score) {
-				this.player1.cards.unshift(drawCard2)
-				this.player1.cards.unshift(drawCard1)
-			}
-			else if (drawCard1.score < drawCard2.score) {
-				this.player2.cards.unshift(drawCard2)
-				this.player2.cards.unshift(drawCard1)
-			}
-			else if (drawCard1.score === drawCard2.score) {
-				this.player2.cards.unshift(drawCard2)
-				this.player2.cards.unshift(drawCard1)
-			}
+		else if (drawCard1.score === drawCard2.score) {
+			this.player2.cards.unshift(drawCard2)
+			this.player2.cards.unshift(drawCard1)
 		}
+
 		if (this.player1.cards.length === 0){
 			console.log("Player 2 has won the game")
+			this.restartGame()
 		}
 		else if(this.player2.cards.length === 0){
 			console.log("Player 1 has won the game")
+			this.restartGame()
 		}
+	}
+	restartGame (){
+		console.log("Restarting Game ...")
+		this.player1.cards = []
+		this.player2.cards = []
+		this.newDeck.makeDeck()
+		this.dealCards()
 	}
 }
 
