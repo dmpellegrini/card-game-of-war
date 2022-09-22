@@ -26,26 +26,21 @@ class Game {
 		}
 	}
 	playTurn (){
-		// if (this.player1.cards.length === 0){
-		// 	console.log("Player 2 has already won the game")
-		// }
-		// else if(this.player2.cards.length === 0){
-		// 	console.log("Player 1 has already won the game")
-		// }
-		// else {
 		const drawCard1 = this.player1.cards.pop()
 		const drawCard2 = this.player2.cards.pop()
+		
 		if (drawCard1.score > drawCard2.score) {
 			this.player1.cards.unshift(drawCard2)
 			this.player1.cards.unshift(drawCard1)
+			console.log(`Player 1's ${drawCard1.rank} of ${drawCard1.suit} beats Player 2's ${drawCard2.rank} of ${drawCard2.suit}`)
 		}
 		else if (drawCard1.score < drawCard2.score) {
 			this.player2.cards.unshift(drawCard2)
 			this.player2.cards.unshift(drawCard1)
+			console.log(`Player 2's ${drawCard2.rank} of ${drawCard2.suit} beats Player 1's ${drawCard1.rank} of ${drawCard1.suit}`)
 		}
 		else if (drawCard1.score === drawCard2.score) {
-			this.player2.cards.unshift(drawCard2)
-			this.player2.cards.unshift(drawCard1)
+			this.tieBreaker()
 		}
 
 		if (this.player1.cards.length === 0){
@@ -55,6 +50,29 @@ class Game {
 		else if(this.player2.cards.length === 0){
 			console.log("Player 1 has won the game")
 			this.restartGame()
+		}
+	}
+	tieBreaker () {
+		let tieHolder1 = []
+		let tieHolder2 = []
+		for (let i = 0; i < 4; i++){
+			tieHolder1.push(this.player1.cards.pop())
+			tieHolder2.push(this.player2.cards.pop())
+		}
+		if (tieHolder1[3].score > tieHolder2[3].score) {
+			for (let i = 0; i < 4; i++){
+				this.player1.cards.unshift(tieHolder1[i])
+				this.player1.cards.unshift(tieHolder2[i])
+			}
+		}
+		else if (tieHolder1[3].score < tieHolder2[3].score) {
+			for (let i = 0; i < 4; i++){
+				this.player2.cards.unshift(tieHolder1[i])
+				this.player2.cards.unshift(tieHolder2[i])
+			}
+		}
+		else if (tieHolder1[3].score === tieHolder[3].score) {
+			this.tieBreaker()
 		}
 	}
 	restartGame (){
@@ -119,7 +137,7 @@ const newGame = new Game
 console.log(newGame.newDeck.deck)
 // newGame.shuffleDeck()
 newGame.dealCards()
-for (let i = 0; i < 25; i++) {
+for (let i = 0; i < 23; i++) {
 	newGame.playTurn()
 }
 console.log(newGame.player1.cards, newGame.player2.cards)
