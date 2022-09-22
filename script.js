@@ -12,7 +12,7 @@ class Game {
 		this.newDeck.deck.sort(() => Math.random() - .5)
 	}
 	reverseDeck(){
-		this.newDeck.deck.sort(() => 1)
+		this.newDeck.deck.sort(() => -1)
 	}
 	dealCards(){
 		for (let i = this.newDeck.deck.length; i > 0; i--){
@@ -27,10 +27,10 @@ class Game {
 	}
 	playTurn (){
 		if (this.player1.cards.length === 0){
-			console.log("Player 2 has won the game")
+			console.log("Player 2 has already won the game")
 		}
 		else if(this.player2.cards.length === 0){
-			console.log("Player 1 has won the game")
+			console.log("Player 1 has already won the game")
 		}
 		else {
 			const drawCard1 = this.player1.cards.pop()
@@ -43,6 +43,16 @@ class Game {
 				this.player2.cards.unshift(drawCard2)
 				this.player2.cards.unshift(drawCard1)
 			}
+			else if (drawCard1.score === drawCard2.score) {
+				this.player2.cards.unshift(drawCard2)
+				this.player2.cards.unshift(drawCard1)
+			}
+		}
+		if (this.player1.cards.length === 0){
+			console.log("Player 2 has won the game")
+		}
+		else if(this.player2.cards.length === 0){
+			console.log("Player 1 has won the game")
 		}
 	}
 }
@@ -68,7 +78,7 @@ class Deck {
 	}
 	makeDeck() {
 		const suits = ['hearts','spades','clubs','diamonds']
-		const scores = [14,2,3,4,5,6,7,8,9,10,11,12,13]
+		const scores = [2,3,4,5,6,7,8,9,10,11,12,13]
 		for (const suit of suits) {
 			for (const score of scores) {
 				if (score === 14){
@@ -97,32 +107,10 @@ class Deck {
 }
 
 const newGame = new Game
-// newGame.reverseDeck()
+console.log(newGame.newDeck.deck)
+// newGame.shuffleDeck()
 newGame.dealCards()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-newGame.playTurn()
-console.log(newGame.player1.cards, newGame.player2.cards, newGame.newDeck.deck)
+for (let i = 0; i < 25; i++) {
+	newGame.playTurn()
+}
+console.log(newGame.player1.cards, newGame.player2.cards)
