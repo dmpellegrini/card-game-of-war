@@ -1,6 +1,7 @@
 // Card Game Of War
 
 class Game {
+	// Constructs Game class with given ojects
 	constructor(){
 		this.newDeck = new Deck()
 		this.player1 = new Player()
@@ -12,6 +13,7 @@ class Game {
 	shuffleDeck(){
 		this.newDeck.deck.sort(() => Math.random() - .5)
 	}
+	// This is sorts the deck in ascending order for the purposes of testing the game
 	sortDeckAscending(){
 		this.newDeck.deck.sort((a,b) => a.score - b.score)
 	}
@@ -27,7 +29,7 @@ class Game {
 			}
 		}
 	}
-	// This is for the purposes of testing the end game
+	// This stacks the deck in favor of Player 1 for the purposes of testing the end game
 	dealCardsUnfair(){
 		for (let i = this.newDeck.deck.length; i > 0; i--){
 			const cardDealt = this.newDeck.deck.pop()
@@ -39,7 +41,7 @@ class Game {
 			}
 		}
 	}
-	
+	// This causes both players play the top card in their pile	
 	playTurn (){
 		const drawCard1 = this.player1.cards.pop()
 		const drawCard2 = this.player2.cards.pop()
@@ -67,32 +69,63 @@ class Game {
 			this.restartGame()
 		}
 	}
-	tieBreaker (card1,card2) {
-		let tieHolder1 = [card1]
-		let tieHolder2 = [card2]
-	for (let i = 0; i < 3; i++){
-		tieHolder1.push(this.player1.cards.pop())
-		tieHolder2.push(this.player2.cards.pop())
+	compareCards (){
 	}
-	if (tieHolder1[3].score > tieHolder2[3].score) {
-			for (let i = 0; i < 4; i++){
-				this.player1.cards.unshift(tieHolder1[i])
-				this.player1.cards.unshift(tieHolder2[i])
-			}
+	tieBreaker (card1,card2) {
+		let tieHolder1 = []
+		let tieHolder2 = []
+		if (this.player2.cards.length < 4){
+			console.log("Player 1 wins")
+			// this.restartGame()
 		}
-		else if (tieHolder1[3].score < tieHolder2[3].score) {
-			for (let i = 0; i < 4; i++){
-				this.player2.cards.unshift(tieHolder1[i])
-				this.player2.cards.unshift(tieHolder2[i])
-			}
+		else if (this.player1.cards.length < 4){
+			console.log("Player 2 wins")
+			// this.restartGame()
 		}
-		else if (tieHolder1[3].score === tieHolder2[3].score) {
-			console.log(tieHolder1, tieHolder2)
+		else {
 			for (let i = 0; i < 4; i++){
-				this.player2.cards.unshift(tieHolder1[i])
-				this.player2.cards.unshift(tieHolder2[i])
+				tieHolder1.push(this.player1.cards.pop())
+				tieHolder2.push(this.player2.cards.pop())
 			}
-			console.log("Stopping function for now")
+			if (tieHolder1[3].score > tieHolder2[3].score) {
+				this.player1.cards.unshift(card1)
+				this.player1.cards.unshift(card2)
+				for (let i = 0; i < 4; i++){
+					this.player1.cards.unshift(tieHolder1[i])
+					this.player1.cards.unshift(tieHolder2[i])
+				}
+			}
+			else if (tieHolder1[3].score < tieHolder2[3].score) {
+				this.player2.cards.unshift(card1)
+				this.player2.cards.unshift(card2)
+				for (let i = 0; i < 4; i++){
+					this.player2.cards.unshift(tieHolder1[i])
+					this.player2.cards.unshift(tieHolder2[i])
+				}
+			}
+			else if (tieHolder1[3].score === tieHolder2[3].score) {
+				if (this.player2.cards.length < 4){
+					console.log("Player 1 wins")
+					console.log(this.player1.cards,this.player2.cards)
+					this.restartGame()
+				}
+				else if (this.player1.cards.length < 4){
+					console.log("Player 2 wins")
+					console.log(this.player1.cards,this.player2.cards)
+					this.restartGame()
+				}
+				else {
+					this.tieBreaker()
+					// this.player1.cards.unshift(card1)
+					// this.player1.cards.unshift(card2)
+					// console.log(card1,tieHolder1,card2,tieHolder2)
+					// for (let i = 0; i < 4; i++){
+					// 	this.player1.cards.unshift(tieHolder1[i])
+					// 	this.player1.cards.unshift(tieHolder2[i])
+					// }
+					// console.log("Stopping function for now")
+				}
+			}
 		}
 	}
 	restartGame (){
@@ -160,7 +193,7 @@ newGame.dealCards()
 // newGame.shuffleDeck()
 // console.log(newGame.newDeck.deck)
 // newGame.dealCardsUnfair()
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 5; i++) {
 	newGame.playTurn()
 }
 console.log(newGame.player1.cards, newGame.player2.cards)
