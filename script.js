@@ -46,19 +46,7 @@ class Game {
 		const drawCard1 = this.player1.cards.pop()
 		const drawCard2 = this.player2.cards.pop()
 		
-		if (drawCard1.score > drawCard2.score) {
-			this.player1.cards.unshift(drawCard2)
-			this.player1.cards.unshift(drawCard1)
-			console.log(`Player 1's ${drawCard1.rank} of ${drawCard1.suit} beats Player 2's ${drawCard2.rank} of ${drawCard2.suit}`)
-		}
-		else if (drawCard1.score < drawCard2.score) {
-			this.player2.cards.unshift(drawCard2)
-			this.player2.cards.unshift(drawCard1)
-			console.log(`Player 2's ${drawCard2.rank} of ${drawCard2.suit} beats Player 1's ${drawCard1.rank} of ${drawCard1.suit}`)
-		}
-		else if (drawCard1.score === drawCard2.score) {
-			this.tieBreaker(drawCard1,drawCard2)
-		}
+		this.awardCards(drawCard1,drawCard2)
 
 		if (this.player1.cards.length === 0){
 			console.log("Player 2 has won the game")
@@ -69,7 +57,20 @@ class Game {
 			this.restartGame()
 		}
 	}
-	compareCards (){
+	awardCards (card1,card2){
+		if (card1.score > card2.score) {
+			this.player1.cards.unshift(card2)
+			this.player1.cards.unshift(card1)
+			console.log(`Player 1's ${card1.rank} of ${card1.suit} beats Player 2's ${card2.rank} of ${card2.suit}`)
+		}
+		else if (card1.score < card2.score) {
+			this.player2.cards.unshift(card2)
+			this.player2.cards.unshift(card1)
+			console.log(`Player 2's ${card2.rank} of ${card2.suit} beats Player 1's ${card1.rank} of ${card1.suit}`)
+		}
+		else if (card1.score === card2.score) {
+			this.tieBreaker(card1,card2)
+		}
 	}
 	tieBreaker (card1,card2) {
 		let tieHolder1 = []
@@ -87,7 +88,7 @@ class Game {
 				tieHolder1.push(this.player1.cards.pop())
 				tieHolder2.push(this.player2.cards.pop())
 			}
-			if (tieHolder1[3].score > tieHolder2[3].score) {
+			if (tieHolder1[tieHolder1.length-1].score > tieHolder2[tieHolder2.length-1].score) {
 				this.player1.cards.unshift(card1)
 				this.player1.cards.unshift(card2)
 				for (let i = 0; i < 4; i++){
@@ -95,7 +96,7 @@ class Game {
 					this.player1.cards.unshift(tieHolder2[i])
 				}
 			}
-			else if (tieHolder1[3].score < tieHolder2[3].score) {
+			else if (tieHolder1[tieHolder1.length-1].score < tieHolder2[tieHolder2.length-1].score) {
 				this.player2.cards.unshift(card1)
 				this.player2.cards.unshift(card2)
 				for (let i = 0; i < 4; i++){
@@ -103,7 +104,7 @@ class Game {
 					this.player2.cards.unshift(tieHolder2[i])
 				}
 			}
-			else if (tieHolder1[3].score === tieHolder2[3].score) {
+			else if (tieHolder1[tieHolder1.length-1].score === tieHolder2[tieHolder2.length-1].score) {
 				if (this.player2.cards.length < 4){
 					console.log("Player 1 wins")
 					console.log(this.player1.cards,this.player2.cards)
@@ -115,15 +116,15 @@ class Game {
 					this.restartGame()
 				}
 				else {
-					this.tieBreaker()
-					// this.player1.cards.unshift(card1)
-					// this.player1.cards.unshift(card2)
-					// console.log(card1,tieHolder1,card2,tieHolder2)
-					// for (let i = 0; i < 4; i++){
-					// 	this.player1.cards.unshift(tieHolder1[i])
-					// 	this.player1.cards.unshift(tieHolder2[i])
-					// }
-					// console.log("Stopping function for now")
+					// this.tieBreaker()
+					this.player1.cards.unshift(card1)
+					this.player1.cards.unshift(card2)
+					console.log(card1,tieHolder1,card2,tieHolder2)
+					for (let i = 0; i < 4; i++){
+						this.player1.cards.unshift(tieHolder1[i])
+						this.player1.cards.unshift(tieHolder2[i])
+					}
+					console.log("Stopping function for now")
 				}
 			}
 		}
@@ -187,12 +188,18 @@ class Deck {
 }
 
 const newGame = new Game
+
+// Deck Sorting
 newGame.sortDeckAscending()
-// console.log(newGame.newDeck.deck)
-newGame.dealCards()
 // newGame.shuffleDeck()
-// console.log(newGame.newDeck.deck)
+
+// Deck Dealing
+newGame.dealCards()
+// newGame.dealCards()
 // newGame.dealCardsUnfair()
+
+// Deck Viewing
+
 for (let i = 0; i < 5; i++) {
 	newGame.playTurn()
 }
