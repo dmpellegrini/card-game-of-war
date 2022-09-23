@@ -6,9 +6,10 @@ class Game {
 		this.newDeck = new Deck()
 		this.player1 = new Player()
 		this.player2 = new Player()
+		this.tieCount = 0
 		this.tieHolder1 = []
 		this.tieHolder2 = []
-		this.gameOver = false
+		this.gameOver = true 
 	}
 	// Randomly feeds positive and negative values to the sort method
 	shuffleDeck(){
@@ -28,31 +29,50 @@ class Game {
 	}
 	// Initiates the gameplay sequence
 	playGame (){
+		console.log("WELCOME TO THE GAME OF WAR")
+		console.log("Let's Play!")
+		console.log("\n")
+		this.gameOver = false
 		this.shuffleDeck()
 		this.dealCards()
-		while (this.gameOver === false){
+		console.log(this.player1.cards, this.player2.cards)
+		this.tieHolder1 = []
+		this.tieHolder2 = []
+		let turncount = 0
+		while (this.gameOver === false && turncount <500){
 			this.playTurn()
+			turncount += 1
 		}
+		if (turncount >= 500) {
+			console.log("It's a tie")
+			this.tieCount += 1
+		}
+		console.log(`Player 1 has won `, this.player1.gamesWon, ` games`)
+		console.log(`Player 2 has won `, this.player2.gamesWon, ` games`)
+		console.log(`There have been`, this.tieCount, `ties`)
+		console.log("\n")
+		this.resetGame()
 	}
 	// This causes both players play the top card in their pile	
 	playTurn (){
 		console.log(`Player 1 Cards: `, this.player1.cards.length,'Player 2 Cards: ',  this.player2.cards.length)
 		if (this.player1.cards.length === 0 && this.player2.cards.length === 0){
 			console.log("It's a tie")
+			console.log("\n")
 			this.gameOver = true
 		}
 		// If Player1 runs out of cards call Player 2 winner and end game
 		else if (this.player1.cards.length === 0){
 			console.log("Player 2 has won the game")
 			this.player2.gamesWon += 1
-			console.log(`Player 2 has won `, this.player2.gamesWon, ` games`)
+			console.log("\n")
 			this.gameOver = true
 		}
 		// If Player2 runs out of cards call Player 1 winner and end game
 		else if(this.player2.cards.length === 0){
 			console.log("Player 1 has won the game")
 			this.player1.gamesWon += 1
-			console.log(`Player 1 has won `, this.player1.gamesWon, ` games`)
+			console.log("\n")
 			this.gameOver = true
 		}
 		// If both players still have cards, draw cards compare them and award them
@@ -76,6 +96,7 @@ class Game {
 		}
 		// If there is a tie call the "tieBreaker" function
 		else if (card1.score === card2.score) {
+			console.log(`Player 1's ${card1.rank} of ${card1.suit} ties Player 2's ${card2.rank} of ${card2.suit}`)
 			this.tieBreaker(card1,card2)
 		}
 	}
@@ -85,20 +106,23 @@ class Game {
 		// Tie in the rare event that both players don't have enough cards for gameplay
 		if (this.player2.cards.length < 4 && this.player1.cards.length < 4){
 			console.log("It's a tie")
+			console.log("\n")
 			this.gameOver = true
 		}
 		// If player 2 runs out of enough cards, player 1 wins	
 		else if (this.player2.cards.length < 4){
+			console.log("Player 2 is out of cards")
 			console.log("Player 1 wins")
 			this.player1.gamesWon += 1
-			console.log(`Player 1 has won `, this.player1.gamesWon, ` games`)
+			console.log("\n")
 			this.gameOver = true
 		}
 		// If player 1 runs out of enough cards, player 2 wins
 		else if (this.player1.cards.length < 4){
+			console.log("Player 1 is out of cards")
 			console.log("Player 2 wins")
 			this.player2.gamesWon += 1
-			console.log(`Player 2 has won `, this.player2.gamesWon, ` games`)
+			console.log("\n")
 			this.gameOver = true
 		}
 		// If both players can play war, proceed with tie breaker
@@ -140,15 +164,18 @@ class Game {
 			}
 		}
 	}
-	replayGame (){
-		console.log("Restarting Game ...")
+	resetGame (){
+		// console.log("Restarting Game ...")
 		this.player1.cards = []
 		this.player2.cards = []
+		this.tieHolder1 = []
+		this.tieHolder2 = []
 		this.newDeck.deck = []
 		this.newDeck.makeDeck()
+		console.log(this.newDeck.deck)
 		this.gameOver = false
-		this.playGame()
-		console.log(this.player1.cards,this.player1.cards)
+		// this.playGame()
+		// console.log(this.player1.cards,this.player1.cards)
 		
 	}
 }
@@ -205,11 +232,24 @@ class Deck {
 
 const newGame = new Game
 newGame.playGame()
-newGame.replayGame()
-newGame.replayGame()
-newGame.replayGame()
-newGame.replayGame()
-newGame.replayGame()
-newGame.replayGame()
-newGame.replayGame()
-newGame.replayGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
+newGame.playGame()
