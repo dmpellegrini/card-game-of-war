@@ -9,7 +9,7 @@ class Game {
 		this.tieCount = 0
 		this.tieHolder1 = []
 		this.tieHolder2 = []
-		this.gameOver = true 
+		this.gameOver = false 
 	}
 	// Randomly feeds positive and negative values to the sort method
 	shuffleDeck(){
@@ -32,13 +32,11 @@ class Game {
 		console.log("WELCOME TO THE GAME OF WAR")
 		console.log("Let's Play!")
 		console.log("\n")
-		this.gameOver = false
 		this.shuffleDeck()
 		this.dealCards()
 		console.log(this.player1.cards, this.player2.cards)
-		this.tieHolder1 = []
-		this.tieHolder2 = []
 		let turncount = 0
+		// Loops over turns until player looses or 500 turns have been played
 		while (this.gameOver === false && turncount <500){
 			this.playTurn()
 			turncount += 1
@@ -47,8 +45,10 @@ class Game {
 			console.log("It's a tie")
 			this.tieCount += 1
 		}
+		console.log("\n")
 		console.log(`Player 1 has won `, this.player1.gamesWon, ` games`)
 		console.log(`Player 2 has won `, this.player2.gamesWon, ` games`)
+		console.log("\n")
 		console.log(`There have been`, this.tieCount, `ties`)
 		console.log("\n")
 		this.resetGame()
@@ -57,12 +57,14 @@ class Game {
 	playTurn (){
 		console.log(`Player 1 Cards: `, this.player1.cards.length,'Player 2 Cards: ',  this.player2.cards.length)
 		if (this.player1.cards.length === 0 && this.player2.cards.length === 0){
+			console.log("\n")
 			console.log("It's a tie")
 			console.log("\n")
 			this.gameOver = true
 		}
 		// If Player1 runs out of cards call Player 2 winner and end game
 		else if (this.player1.cards.length === 0){
+			console.log("\n")
 			console.log("Player 2 has won the game")
 			this.player2.gamesWon += 1
 			console.log("\n")
@@ -70,6 +72,7 @@ class Game {
 		}
 		// If Player2 runs out of cards call Player 1 winner and end game
 		else if(this.player2.cards.length === 0){
+			console.log("\n")
 			console.log("Player 1 has won the game")
 			this.player1.gamesWon += 1
 			console.log("\n")
@@ -105,12 +108,14 @@ class Game {
 		console.log("I declare war!")
 		// Tie in the rare event that both players don't have enough cards for gameplay
 		if (this.player2.cards.length < 4 && this.player1.cards.length < 4){
+			console.log("\n")
 			console.log("It's a tie")
 			console.log("\n")
 			this.gameOver = true
 		}
 		// If player 2 runs out of enough cards, player 1 wins	
 		else if (this.player2.cards.length < 4){
+			console.log("\n")
 			console.log("Player 2 is out of cards")
 			console.log("Player 1 wins")
 			this.player1.gamesWon += 1
@@ -119,6 +124,7 @@ class Game {
 		}
 		// If player 1 runs out of enough cards, player 2 wins
 		else if (this.player1.cards.length < 4){
+			console.log("\n")
 			console.log("Player 1 is out of cards")
 			console.log("Player 2 wins")
 			this.player2.gamesWon += 1
@@ -140,6 +146,8 @@ class Game {
 			if (lastCard1.score > lastCard2.score) {
 				console.log(`Player 1's ${lastCard1.rank} of ${lastCard1.suit} beats Player 2's ${lastCard2.rank} of ${lastCard2.suit}`)
 				this.player1.cards.unshift(card1,card2)
+				this.tieHolder1.sort(() => Math.random() - .5)
+				this.tieHolder2.sort(() => Math.random() - .5)
 				for (let i = 0; i < this.tieHolder1.length; i++){
 					this.player1.cards.unshift(this.tieHolder1[i])
 					this.player1.cards.unshift(this.tieHolder2[i])
@@ -152,6 +160,8 @@ class Game {
 			else if (lastCard1.score < lastCard2.score) {
 				console.log(`Player 2's ${lastCard2.rank} of ${lastCard2.suit} beats Player 1's ${lastCard1.rank} of ${lastCard1.suit}`)
 				this.player2.cards.unshift(card1,card2)
+				this.tieHolder1.sort(() => Math.random() - .5)
+				this.tieHolder2.sort(() => Math.random() - .5)
 				for (let i = 0; i < this.tieHolder1.length; i++){
 					this.player2.cards.unshift(this.tieHolder1[i])
 					this.player2.cards.unshift(this.tieHolder2[i])
@@ -164,6 +174,7 @@ class Game {
 			}
 		}
 	}
+	// Resets the game by clearing player cards piles and repopulating the deck
 	resetGame (){
 		// console.log("Restarting Game ...")
 		this.player1.cards = []
@@ -172,11 +183,7 @@ class Game {
 		this.tieHolder2 = []
 		this.newDeck.deck = []
 		this.newDeck.makeDeck()
-		console.log(this.newDeck.deck)
 		this.gameOver = false
-		// this.playGame()
-		// console.log(this.player1.cards,this.player1.cards)
-		
 	}
 }
 
@@ -231,23 +238,6 @@ class Deck {
 }
 
 const newGame = new Game
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
-newGame.playGame()
 newGame.playGame()
 newGame.playGame()
 newGame.playGame()
